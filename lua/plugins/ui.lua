@@ -1,5 +1,4 @@
 return {
-    
     {
         "catppuccin/nvim",
         name = "catppuccin",
@@ -8,15 +7,5 @@ return {
         config = function()
         vim.cmd([[colorscheme catppuccin]])
         end,
-    },
-    {
-        "folke/noice.nvim",
-        event = "VeryLazy",
-        opts = {
-            presets = {
-                bottom_search = true,
-                command_palette = true,
-            },
-        },
     },
 }

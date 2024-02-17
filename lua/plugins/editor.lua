@@ -25,6 +25,10 @@ return {
                 end,
             },
         },
+        keys = {
+            --find
+            { "<leader>fc", Util.telescope.config_files(), desc = "Find Config File" },
+        },
     },
     {
         "folke/which-key.nvim",
