@@ -1,8 +1,9 @@
-local Util = require("util")
+local Util = require("alex-la.util")
 
 ---@class util.telescope.opts
 ---@field cwd? string|boolean
 ---@field show_untracked? boolean
+---@field scope? "builtin" | "extensions"
 
 ---@class util.telescope
 ---@overload fun(builtin:string, opts?:util.telescope.opts)
@@ -14,25 +15,15 @@ local M = setmetatable({}, {
 
 -- this will return a function that calls telescope.
 -- cwd will default to util.get_root
--- for `files`, git_files or find_files will be chosen depending on .git
----@param builtin string
+---@param picker string
 ---@param opts? util.telescope.opts
-function M.telescope(builtin, opts)
-    local params = { builtin = builtin, opts = opts }
+function M.telescope(picker, opts)
+    local params = { picker = picker, opts = opts }
 
     return function()
-        builtin = params.builtin
+        picker = params.picker
         opts = params.opts
-        opts = vim.tbl_deep_extend("force", { cwd = Util.root() }, opts or {}) --[[@as util.telescope.opts]]
-
-        if builtin == "files" then
-            if vim.loop.fs_stat((opts.cwd or vim.loop.cwd()) .. "/.git") then
-                opts.show_untracked = true
-                builtin = "git_files"
-            else
-                builtin = "find_files"
-            end
-        end
+        opts = vim.tbl_deep_extend("force", { cwd = Util.root(), scope = "builtin" }, opts or {}) --[[@as util.telescope.opts]]
 
         if opts.cwd and opts.cwd ~= vim.loop.cwd() then
             ---@diagnostic disable-next-line: inject-field
@@ -42,7 +33,7 @@ function M.telescope(builtin, opts)
                     local line = action_state.get_current_line()
 
                     M.telescope(
-                        params.builtin,
+                        params.picker,
                         vim.tbl_deep_extend("force", {}, params.opts or {}, { cwd = false, default_text = line })
                     )()
                 end)
@@ -50,13 +41,17 @@ function M.telescope(builtin, opts)
                 return true
             end
         end
-
-        require("telescope.builtin")[builtin](opts)
+        
+        if opts.scope =="builtin" then
+            require("telescope.builtin")[picker](opts)
+        elseif opts.scope == 'extensions' then
+            require("telescope").extensions[picker][picker](opts)
+        end
     end
 end
 
-function M.config_files()
-  return Util.telescope("find_files", { cwd = vim.fn.stdpath("config") })
+function M.config_dir()
+  return Util.telescope("file_browser", { scope="extensions", cwd = vim.fn.stdpath("config") })
 end
 
 return M

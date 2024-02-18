@@ -11,7 +11,7 @@ setmetatable(M, {
             return LazyUtil[k]
         end
 
-        t[k] = require("util." .. k)
+        t[k] = require("alex-la.util." .. k)
 
         return t[k]
     end

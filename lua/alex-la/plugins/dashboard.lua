@@ -25,11 +25,10 @@ return {
                 header = vim.split(logo, "\n"),
                 -- stylua: ignore
                 center = {
-                    { action = "Telescope find_files",                                     desc = " Find file",       icon = "󱊒 ", key = "f" },
-                    { action = "Telescope file_browser",                                   desc = " Browse files",    icon = " ", key = "b" },
-                    { action = [[lua require("util").telescope.config_files()()]],         desc = " Config",          icon = " ", key = "c" },
-                    { action = "Lazy",                                                     desc = " Lazy",            icon = "󰒲 ", key = "l" },
-                    { action = "qa",                                                       desc = " Quit",            icon = " ", key = "q" },
+                    { action = "Telescope file_browser",                                    desc = " Browser",         icon = " ", key = "b" },
+                    { action = [[lua require("alex-la.util").telescope.config_dir()()]],    desc = " Config",          icon = " ", key = "c" },
+                    { action = "Lazy",                                                      desc = " Lazy",            icon = "󰒲 ", key = "l" },
+                    { action = "qa",                                                        desc = " Quit",            icon = " ", key = "q" },
                 },
                 footer = function()
                 local stats = require("lazy").stats()

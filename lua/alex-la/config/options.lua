@@ -1,0 +1,1 @@
+vim.g.mapleader = " " -- Leader for my bindings

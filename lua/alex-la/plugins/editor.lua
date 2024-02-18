@@ -1,4 +1,4 @@
-local Util = require("util")
+local Util = require("alex-la.util")
 
 return {
     {
@@ -27,7 +27,7 @@ return {
         },
         keys = {
             --find
-            { "<leader>fc", Util.telescope.config_files(), desc = "Find Config File" },
+            -- { "<leader>fc", Util.telescope.config_files(), desc = "Find Config File" },
         },
     },
     {
