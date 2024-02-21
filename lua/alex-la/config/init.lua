@@ -23,6 +23,24 @@ function M.init()
     M.did_init = true
 
     M.load("options")
+    
+    local lazy_autocmds = vim.fn.argc(-1) == 0
+    if not lazy_autocmds then
+        M.load("autocmds")
+    end
+      
+    local group = vim.api.nvim_create_augroup("AlexLa", { clear = true })
+    vim.api.nvim_create_autocmd("User", {
+        group = group,
+        pattern = "VeryLazy",
+        callback = function ()
+            if lazy_autocmds then
+                M.load("autocmds")
+            end
+            
+            M.load("keymaps")
+        end,
+    })
 end
 
 return M
